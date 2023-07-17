@@ -1,0 +1,36 @@
+
+
+.carddata{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+    margin-right:auto ;
+    width: 50%;
+    background-color: bisque;
+   margin-top: 2rem;
+   
+}
+
+.carddata>p{
+    text-align: justify;
+}
+
+h1{
+    opacity: 0.5;
+    padding: 0.5rem;
+    margin: 2rem;
+    font-size: 30px;
+    text-align: center;
+}
+
+.invalidmsg{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 500;
+    color: red;
+    opacity: 0.5;
+}
