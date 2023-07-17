@@ -6,55 +6,57 @@ import "../styles/InputData.css";
 const InputData: React.FC<any> = () => {
   const navigate = useNavigate();
   const [input, setInput] = useState("");
- const [astId, setAstId] = useState(null);
-  const [randomData, setRandomdata] = useState<any>([]);
+  const [astId, setAstId] = useState<string | null>(null);
+  const [randomData, setRandomdata] = useState<any[]>([]);
 
   useEffect(() => {
-    {
-      axios
-        .get(
+    const fetchRandomData = async () => {
+      try {
+        const response = await axios.get(
           "https://api.nasa.gov/neo/rest/v1/neo/browse?api_key=NCqqqHjs2B6uPEgsuzkxtaDccnIXQXTEYLAed4Dg"
-        )
-        .then((res) => setRandomdata(res.data.near_earth_objects))
-        .catch((err) => console.log(err));
-    }
+        );
+        setRandomdata(response.data?.near_earth_objects || []);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchRandomData();
   }, []);
 
-  let valus: any = randomData.map((item: any) => item.id);
   useEffect(() => {
-    let valus: any = randomData.map((item: any) => item.id);
-    const random = Math.floor(Math.random() * valus.length);
-    setAstId(valus[random]);
+    if (randomData.length > 0) {
+      const randomIndex = Math.floor(Math.random() * randomData.length);
+      setAstId(randomData[randomIndex].id);
+    }
   }, [randomData]);
 
-
-  const handleSubmit = (e: any) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
-    navigate("/asteroidInfo", { state: { input, valus } });
+    navigate("/asteroidInfo", { state: { input, valus: randomData.map((item) => item.id) } });
   };
 
   const randomClick = () => {
-    if(astId && astId)
-    navigate("/asteroidRandom", {state:{astId}});
+    if (astId) {
+      navigate("/asteroidRandom", { state: { astId } });
+    }
   };
 
   return (
     <div className="inputdata">
       <div className="formcontainer">
-      <form className="formdata" onSubmit={handleSubmit}>
-        <input
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="Enter Asteroid ID"
-        />
-        <button type="submit" disabled={input === ""}>
-          Submit
+        <form className="formdata" onSubmit={handleSubmit}>
+          <input
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Enter Asteroid ID"
+          />
+          <button type="submit" disabled={input === ""}>
+            Submit
+          </button>
+        </form>
+        <button type="button" onClick={randomClick}>
+          Random Asteroid
         </button>
-      </form>
-      <button type="submit" onClick={randomClick}>
-        Random Asteroid
-      </button>
       </div>
     </div>
   );

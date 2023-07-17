@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import {  useLocation } from "react-router-dom";
 import axios from "axios";
 import "../styles/AsteroidbyId.css";
 import Loading from "../component/Loading";
@@ -11,7 +11,7 @@ interface AsteroidData {
 
 function AsteroidbyId() {
   let location = useLocation();
-  let asteroidId = location.state.input;
+  let asteroidId:string = location.state.input;
   let idarray = location.state.valus;
   //   console.log(idarray);
 
@@ -35,7 +35,7 @@ function AsteroidbyId() {
   return (
     <div className="container">
         <h1>Asteroid Information ID:{asteroidId}</h1>
-      {(idarray && idarray.includes(asteroidId)) || asteroidId == 3542519 ? (
+      {(idarray && idarray.includes(asteroidId)) || asteroidId === '3542519' ? (
         <div>
           {data && data ? (
             <div className="card">
